@@ -11,14 +11,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-# import pymysql 
-import os
-import dj_database_url
-from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(os.path.join(BASE_DIR/".eVar", ".env"))
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -31,16 +27,11 @@ load_dotenv(os.path.join(BASE_DIR/".eVar", ".env"))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-b#%#$3uc*0@z-+=6l7a!m$8gxh^l@#lvy%&zl6g-p$4@+58bw#"
-# os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-# os.environ.get("DEBUG")
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
-allowed_hosts_env = os.environ.get("ALLOWED_HOSTS")
-if allowed_hosts_env:
-    ALLOWED_HOSTS += allowed_hosts_env.split(',')
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -91,18 +82,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "backend.wsgi.application"
 
-CORS_ORIGIN_ALLOW_ALL = True
+
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-
-# pymysql.install_as_MySQLdb()
+import pymysql 
+pymysql.install_as_MySQLdb()
 
 DATABASES = {
-    "default": dj_database_url.config(
-        default = "sqlite:///" + os.path.join(BASE_DIR, "db.sqlite3")
-    )
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "weather",
+        "USER": "root",
+        "PASSWORD": "",
+        "HOST": "localhost",
+        "PORT":"3306"
+    }
 }
 
 
@@ -141,10 +137,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-# STATIC_URL = "/static/"
-# STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
-STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = "static/"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
